@@ -1,10 +1,23 @@
+/*
+This Terraform configuration sets up a basic web application on AWS using an EC2 instance running Nginx.
+It includes the necessary networking components such as a VPC, subnet, internet gateway, and security groups.
+AWS credentials are required to apply this configuration and can be set using environment variables or the AWS CLI.
+*/
+
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
 ##################################################################################
 # PROVIDERS
 ##################################################################################
 
 provider "aws" {
-  access_key = "ACCESS_KEY"
-  secret_key = "SECRET_KEY"
   region     = "us-east-1"
 }
 
@@ -88,8 +101,20 @@ resource "aws_instance" "nginx1" {
 sudo amazon-linux-extras install -y nginx1
 sudo service nginx start
 sudo rm /usr/share/nginx/html/index.html
-echo '<html><head><title>Taco Team Server</title></head><body style=\"background-color:#1F778D\"><p style=\"text-align: center;\"><span style=\"color:#FFFFFF;\"><span style=\"font-size:28px;\">You did it! Have a &#127790;</span></span></p></body></html>' | sudo tee /usr/share/nginx/html/index.html
+sudo cat > /usr/share/nginx/html/index.html << 'WEBSITE'
+<html>
+<head>
+    <title>Taco Team Server</title>
+</head>
+<body style="background-color:#1F778D">
+    <p style="text-align: center;">
+        <span style="color:#FFFFFF;">
+            <span style="font-size:100px;">Welcome to the website! Have a &#127790;</span>
+        </span>
+    </p>
+</body>
+</html>
+WEBSITE
 EOF
 
 }
-
