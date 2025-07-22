@@ -37,7 +37,7 @@ terraform apply
 
 # Now use the plan file to apply the changes.
 # This is the preferred way to apply changes as it ensures the plan is used.
-terraform apply "m3.tfplan"
+terraform apply m3.tfplan
 
 # Go to the Console and get the Public DNS hostname for the EC2 instance
 # and browse to port 80.
