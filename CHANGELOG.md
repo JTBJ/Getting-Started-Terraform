@@ -1,3 +1,17 @@
+**2025-07-24**
+
+Full course update
+
+This is a full update of the previous course. The exercises and content of the course have been revised based on a new learning path being launched by Pluralsight to replace both the *Terraform - Getting Started* and *Terraform - Deep Dive* courses.
+
+The previous version of the course will remain available under branch `v4`.
+
+* Updated course to use version 5.X of the AWS provider (6.x is still too new)
+* Streamlined course for beginners
+* Removed module content for a module specific course
+* Update to use version 1.12 of Terraform
+* Updated to include the `moved`, `import`, and `removed` blocks
+
 **2023-06-02**
 
 Partial Course Update
