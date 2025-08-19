@@ -1,10 +1,10 @@
 # Getting-Started-Terraform
 
-Welcome to Terraform - Getting Started.  These exercise files are meant to accompany my course on [Pluralsight](http://www.pluralsight.com/courses/terraform-getting-started-2023).  The course was developed using version 1.12.2 of Terraform. Since the GA of version 1.0, HashiCorp has committed to no breaking changes until version 2.0. All the exercises in this course should be valid as long as you are using Terraform in the 1.X version family. The providers in this course have no such guarantee, so I have pinned the version where applicable.
+Welcome to Terraform - Getting Started.  These exercise files are meant to accompany my course on [Pluralsight](http://www.pluralsight.com/courses/terraform-getting-started-5).  The course was developed using version 1.12.2 of Terraform. Since the GA of version 1.0, HashiCorp has committed to no breaking changes until version 2.0. All the exercises in this course should be valid as long as you are using Terraform in the 1.X version family. The providers in this course have no such guarantee, so I have pinned the version where applicable.
 
 If you're looking for the exercise files for older versions of the course, there are two branches to check out:
 
-* [v4](https://github.com/ned1313/Getting-Started-Terraform/tree/v3) - Corresponding to the [course published in June 2023](http://www.pluralsight.com/courses/terraform-getting-started-2023)
+* [v4](https://github.com/ned1313/Getting-Started-Terraform/tree/v4) - Corresponding to the [course published in June 2023](http://www.pluralsight.com/courses/terraform-getting-started-2023)
 * [v3](https://github.com/ned1313/Getting-Started-Terraform/tree/v3) - Corresponding to the [course published on Novemeber 2, 2021](https://app.pluralsight.com/library/courses/terraform-getting-started-2021/table-of-contents).
 * [pre-1.0] - Corresponding to the [course published on October 1, 2019](https://app.pluralsight.com/library/courses/getting-started-terraform/table-of-contents).
 
@@ -16,7 +16,7 @@ In the course, you are given a Terraform configuration for a basic web applicati
 
 As we progress through the course, you will be challenged to make updates to the files in `globo_web_app` to meet the evolving needs and requirements of the web application infrastructure. The completed solution for each module is in the `mX_solution` directories. I recommend trying to first write the solution yourself, and then checking your answer against what you see in the solution file.
 
-In previous versions of the course I started with hardcoded credentials in the provider block and then used input variables to remove them. Putting your credentials in code is a terrible idea, and while my goal was to illustrate how Terraform gets those credentials and how input variables and shell environment variables are helpful, I've decided the practice is too egregious to include even as an anti-pattern. As such, the course assumes you have stored AWS credentials in environment variables or through the AWS CLI as a profile.
+In previous versions of the course I started with hardcoded credentials in the provider block and then used input variables to remove them. Putting your credentials in code is a **terrible** idea, and while my goal was to illustrate how Terraform gets those credentials and how input variables and shell environment variables are helpful, I've decided the practice is too egregious to include even as an anti-pattern. As such, the course assumes you have stored AWS credentials in environment variables or through the AWS CLI as a profile. If you're unfamiliar with how to accomplish this, please check out the documentation [here for environment variables](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#environment-variables) and [here for configuring the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-authentication-user.html).
 
 The suggested commands for each module are in the `commands` directory. You can run these commands to get through the exercises, but I also encourage you to experiment and try things out for yourself.
 
