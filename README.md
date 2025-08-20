@@ -6,7 +6,7 @@ If you're looking for the exercise files for older versions of the course, there
 
 * [v4](https://github.com/ned1313/Getting-Started-Terraform/tree/v4) - Corresponding to the [course published in June 2023](http://www.pluralsight.com/courses/terraform-getting-started-2023)
 * [v3](https://github.com/ned1313/Getting-Started-Terraform/tree/v3) - Corresponding to the [course published on Novemeber 2, 2021](https://app.pluralsight.com/library/courses/terraform-getting-started-2021/table-of-contents).
-* [pre-1.0] - Corresponding to the [course published on October 1, 2019](https://app.pluralsight.com/library/courses/getting-started-terraform/table-of-contents).
+* [pre-1.0](https://github.com/ned1313/Getting-Started-Terraform/tree/pre-1.0) - Corresponding to the [course published on October 1, 2019](https://app.pluralsight.com/library/courses/getting-started-terraform/table-of-contents).
 
 I don't recommend taking the older courses, as they are out of date and do not cover the latest features of Terraform.  I have left the branches available since you may be assigned an older course by your employer.
 
