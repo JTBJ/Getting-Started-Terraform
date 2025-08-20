@@ -1,22 +1,32 @@
-# Time to make our deployment a bit more resilient!
-# We are going to add a second instance and load balance the
-# two instances behind a load balancer. We are going to need 
-# to discover availability zones, add subnets, and add an
-# application load balancer, target group, load balancer listener
-# and target group attachment.
-terraform state list
-terraform state show aws_instance.nginx1
+# Make updates to the code
 
-terraform validate
+# Run terraform fmt and validate to make sure you can
+# run terraform console
+terraform fmt && terraform validate
 
-# In case you don't have them set anymore don't forget to run the export commands
-# For Linux and MacOS
-export TF_VAR_aws_access_key=YOUR_ACCESS_KEY
-export TF_VAR_aws_secret_key=YOUR_SECRET_KEY
+# Launch terraform console to test functions
+terraform console
 
-# For PowerShell
-$env:TF_VAR_aws_access_key="YOUR_ACCESS_KEY"
-$env:TF_VAR_aws_secret_key="YOUR_SECRET_KEY"
+min(4,5,16)
 
+lower("TACOCAT")
+
+local.common_tags
+
+exit
+
+# Update code to use functions
+# Test the merge function
+merge(local.common_tags, { Name = "${local.naming_prefix}-vpc"})
+
+# Test the lower function
+merge(local.common_tags, { Name = lower("${local.naming_prefix}-vpc")})
+
+# Update the output and run fmt and validate again
+terraform fmt && terraform validate
+
+# Now we can run the plan command to see the changes
 terraform plan -out m5.tfplan
+
+# Now apply the changes
 terraform apply m5.tfplan

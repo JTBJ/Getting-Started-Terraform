@@ -1,7 +1,9 @@
 locals {
   common_tags = {
-    company      = var.company
-    project      = "${var.company}-${var.project}"
-    billing_code = var.billing_code
+    Company     = var.company_name
+    Project     = var.project
+    Environment = var.environment
+    BillingCode = var.billing_code
   }
+  naming_prefix = "${var.project}-${var.environment}"
 }

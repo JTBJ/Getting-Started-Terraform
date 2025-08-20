@@ -1,30 +1,19 @@
-# Now we are going to start refactoring by adding some variables
-# and local values to our configuration. This makes it more reusable
-# and simplifies configuration updates.
-terraform init
+# Start by redeploying the code in the globo_web_app directory
+cd globo_web_app
+terraform apply
+
+# Now make changes to the code
+# Next we'll run terraform fmt to format the code
+terraform fmt -check
+terraform fmt
+
+# Now validate the code to ensure there are no syntax errors
+# Add an error to the code to test the validation
 terraform validate
 
-# We will pass our variables at the command line
-terraform plan -var=billing_code="ACCT8675309" -var=project="web-app" -var=aws_access_key="YOUR_ACCESS_KEY" -var=aws_secret_key="YOUR_SECRET_KEY" -out m4.tfplan
-
-# Ugh that's unwieldy. Let's store our nonsensitive variables in a file called
-# terraform.tfvars
-
-# And we can store our sensitive data in environment variables like so
-# For Linux and MacOS
-export TF_VAR_aws_access_key=YOUR_ACCESS_KEY
-export TF_VAR_aws_secret_key=YOUR_SECRET_KEY
-
-# For PowerShell
-$env:TF_VAR_aws_access_key="YOUR_ACCESS_KEY"
-$env:TF_VAR_aws_secret_key="YOUR_SECRET_KEY"
-
-# Now we can run plan without all that extra stuff
+# Add the terraform.tfvars file to set the variables
+# Then run the plan command to see the changes
 terraform plan -out m4.tfplan
-terraform apply "m4.tfplan"
 
-terraform show
-terraform output
-
-# You can always tear it down to save $$
-terraform destroy
+# Now apply the changes
+terraform apply m4.tfplan

@@ -1,23 +1,35 @@
-# Instead of storing our AWS keys in input variables, we will instead store
-# them in environment variables. The AWS provider will check for values
-# stored in AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.
+# Deploy the S3 bucket to store the state
+cd ../s3_bucket_create
 
-# For Linux and MacOS
-export AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY
-export AWS_SECRET_ACCESS_KEY=YOUR_SECRET_ACCESS_KEY
-
-# For PowerShell
-$env:AWS_ACCESS_KEY_ID="YOUR_ACCESS_KEY"
-$env:AWS_SECRET_ACCESS_KEY="YOUR_SECRET_ACCESS_KEY"
-
-# Now we can remove the variables from our configuration
-
-# Once the updates are complete we'll run the standard workflow
-terraform fmt
-
+# Initialize and apply the S3 bucket
 terraform init
-terraform validate
+terraform plan -out bucket.tfplan
+terraform apply bucket.tfplan
 
-terraform plan -out m6.tfplan
-terraform apply m6.tfplan
+# Try out the state commands
+cd ../globo_web_app
 
+# Show the current state
+terraform show
+
+terraform show -json
+
+# List out resources in the state
+terraform state list
+
+# Show a specific resource in the state
+terraform state show aws_instance.nginx1
+
+# Update the globo_web_app backend to use the S3 bucket
+terraform init -backend-config="key=dev.tfstate"
+
+# Run state show again to see the updated state
+terraform state show aws_instance.nginx1
+
+# Tear down the deployments to save costs
+# Globo Web App first
+terraform destroy -auto-approve
+
+# Then the S3 bucket
+cd ../s3_bucket_create
+terraform destroy -auto-approve
