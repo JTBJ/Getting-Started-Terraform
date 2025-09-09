@@ -20,3 +20,6 @@
 # working directory for web app
 /globo_web_app/*
 
+# Trying to bypass any AWS Credential representations
+/commands/*
+
