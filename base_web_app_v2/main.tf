@@ -38,17 +38,21 @@ resource "aws_vpc" "app" {
   cidr_block           = var.aws_vpc_cidr
   enable_dns_hostnames = true
 
+  tags = local.common_tags
 }
 
 resource "aws_internet_gateway" "app" {
   vpc_id = aws_vpc.app.id
 
+  tags = local.common_tags
 }
 
 resource "aws_subnet" "public_subnet1" {
   cidr_block              = var.aws_subnet_cidr
   vpc_id                  = aws_vpc.app.id
   map_public_ip_on_launch = true
+
+  tags = local.common_tags
 }
 
 # ROUTING #
@@ -59,6 +63,8 @@ resource "aws_route_table" "app" {
     cidr_block = var.aws_route_cidr
     gateway_id = aws_internet_gateway.app.id
   }
+
+  tags = local.common_tags
 }
 
 resource "aws_route_table_association" "app_subnet1" {
@@ -87,6 +93,8 @@ resource "aws_security_group" "nginx_sg" {
     protocol    = var.aws_security_group_egress_port
     cidr_blocks = [var.aws_route_cidr]
   }
+
+  tags = local.common_tags
 }
 
 # INSTANCES #
@@ -96,6 +104,8 @@ resource "aws_instance" "nginx1" {
   subnet_id                   = aws_subnet.public_subnet1.id
   vpc_security_group_ids      = [aws_security_group.nginx_sg.id]
   user_data_replace_on_change = true
+
+  tags = local.common_tags
 
   user_data = <<EOF
 #! /bin/bash
