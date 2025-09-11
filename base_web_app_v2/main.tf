@@ -107,25 +107,29 @@ resource "aws_instance" "nginx1" {
 
   tags = local.common_tags
 
-  user_data = <<EOF
-#! /bin/bash
-sudo amazon-linux-extras install -y nginx1
-sudo service nginx start
-sudo rm /usr/share/nginx/html/index.html
-sudo cat > /usr/share/nginx/html/index.html << 'WEBSITE'
-<html>
-<head>
-    <title>Taco Team Server</title>
-</head>
-<body style="background-color:#1F778D">
-    <p style="text-align: center;">
-        <span style="color:#FFFFFF;">
-            <span style="font-size:100px;">Welcome to the website! Have a &#127790;</span>
-        </span>
-    </p>
-</body>
-</html>
-WEBSITE
-EOF
-
+  user_data =
+    user_data = 
+    <EOF
+      #!/bin/bash
+      yum update -y
+      yum install -y httpd
+      
+      systemctl start httpd
+      systemctl enable httpd
+      
+      cat << 'HTML' > /var/www/html/index.html
+        <html>
+        <head>
+            <title>Taco Team Server</title>
+        </head>
+        <body style="background-color:#1F778D">
+            <p style="text-align: center;">
+                <span style="color:#FFFFFF;">
+                    <span style="font-size:100px;">Welcome to the website! Have a 🌮</span>
+                </span>
+            </p>
+        </body>
+        </html>
+      HTML
+    EOF
 }
