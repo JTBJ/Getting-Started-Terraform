@@ -24,4 +24,4 @@
 /commands/*
 
 # Removing .swp files
-**/*.swp
+/base_we_app_v2/*.swp
