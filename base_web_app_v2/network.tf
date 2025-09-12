@@ -55,7 +55,7 @@ resource "aws_subnet" "public_subnet1" {
   cidr_block              = var.aws_public_subnet_cidr[0]
   vpc_id                  = aws_vpc.app.id
   map_public_ip_on_launch = true
-  availability_zone = data.aws_availability_zones.available.names[0]
+  availability_zone       = data.aws_availability_zones.available.names[0]
 
   tags = local.common_tags
 }
@@ -64,7 +64,7 @@ resource "aws_subnet" "public_subnet2" {
   cidr_block              = var.aws_public_subnet_cidr[1]
   vpc_id                  = aws_vpc.app.id
   map_public_ip_on_launch = true
-  availability_zone = data.aws_availability_zones.available.names[1]
+  availability_zone       = data.aws_availability_zones.available.names[1]
 
   tags = local.common_tags
 }
@@ -92,10 +92,33 @@ resource "aws_route_table_association" "app_subnet2" {
   route_table_id = aws_route_table.app.id
 }
 
-# SECURITY GROUPS #
-# Nginx security group 
+# SECURITY GROUPS # 
 resource "aws_security_group" "nginx_sg" {
   name   = "nginx_sg"
+  vpc_id = aws_vpc.app.id
+
+  # HTTP access from anywhere
+  ingress {
+    from_port = var.aws_security_group_ingress_to_from_port
+    to_port   = var.aws_security_group_ingress_to_from_port
+    protocol  = var.aws_security_group_ingress_protocol
+    # cidr_blocks = [var.aws_vpc_cidr]
+    security_groups = [aws_security_group.alb_sg.id]
+  }
+
+  # outbound internet access
+  egress {
+    from_port   = var.aws_security_group_egress_port
+    to_port     = var.aws_security_group_egress_port
+    protocol    = var.aws_security_group_egress_protocol
+    cidr_blocks = [var.aws_route_cidr]
+  }
+
+  tags = local.common_tags
+}
+
+resource "aws_security_group" "alb_sg" {
+  name   = "nginx_alb_sg"
   vpc_id = aws_vpc.app.id
 
   # HTTP access from anywhere
