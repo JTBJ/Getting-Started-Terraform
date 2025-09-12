@@ -21,13 +21,15 @@ provider "aws" {
   region = var.aws_region[0]
 }
 
-##################################################################################
-# DATA
-##################################################################################
+#################################################################################
+# Data
+#################################################################################
 
-data "aws_ssm_parameter" "amzn2_linux" {
-  name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+# Declare the data source
+data "aws_availability_zones" "available" {
+  state = "available"
 }
+
 
 ##################################################################################
 # RESOURCES
@@ -41,16 +43,28 @@ resource "aws_vpc" "app" {
   tags = local.common_tags
 }
 
+# INTERNET GATEWAY
 resource "aws_internet_gateway" "app" {
   vpc_id = aws_vpc.app.id
 
   tags = local.common_tags
 }
 
+# SUBNETS
 resource "aws_subnet" "public_subnet1" {
-  cidr_block              = var.aws_subnet_cidr
+  cidr_block              = var.aws_public_subnet_cidr[0]
   vpc_id                  = aws_vpc.app.id
   map_public_ip_on_launch = true
+  availability_zone = data.aws_availability_zones.available.names[0]
+
+  tags = local.common_tags
+}
+
+resource "aws_subnet" "public_subnet2" {
+  cidr_block              = var.aws_public_subnet_cidr[1]
+  vpc_id                  = aws_vpc.app.id
+  map_public_ip_on_launch = true
+  availability_zone = data.aws_availability_zones.available.names[1]
 
   tags = local.common_tags
 }
@@ -67,8 +81,14 @@ resource "aws_route_table" "app" {
   tags = local.common_tags
 }
 
+# ASSOCIATIONS 
 resource "aws_route_table_association" "app_subnet1" {
   subnet_id      = aws_subnet.public_subnet1.id
+  route_table_id = aws_route_table.app.id
+}
+
+resource "aws_route_table_association" "app_subnet2" {
+  subnet_id      = aws_subnet.public_subnet2.id
   route_table_id = aws_route_table.app.id
 }
 
@@ -95,38 +115,4 @@ resource "aws_security_group" "nginx_sg" {
   }
 
   tags = local.common_tags
-}
-
-# INSTANCES #
-resource "aws_instance" "nginx1" {
-  ami                         = nonsensitive(data.aws_ssm_parameter.amzn2_linux.value)
-  instance_type               = var.instance_size["small"]
-  subnet_id                   = aws_subnet.public_subnet1.id
-  vpc_security_group_ids      = [aws_security_group.nginx_sg.id]
-  user_data_replace_on_change = true
-
-  tags = local.common_tags
-
-  user_data = <<EOF
-      #!/bin/bash
-      yum update -y
-      yum install -y httpd
-      
-      systemctl start httpd
-      systemctl enable httpd
-      
-      cat << 'HTML' > /var/www/html/index.html
-        <html>
-        <head>
-            <title>Taco Team Server</title>
-        </head>
-        <body style="background-color:#1F778D">
-            <p style="text-align: center;">
-                <span style="color:#FFFFFF;">
-                    <span style="font-size:100px;">Welcome to the website! Have a 🌮</span>
-                </span>
-            </p>
-        </body>
-        </html>
-    EOF
 }
