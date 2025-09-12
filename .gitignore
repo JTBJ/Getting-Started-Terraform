@@ -24,4 +24,4 @@
 /commands/*
 
 # Removing .swp files
-*.swp
+*/*.swp
