@@ -23,3 +23,5 @@
 # Trying to bypass any AWS Credential representations
 /commands/*
 
+# Removing .swp files
+*.swp
