@@ -90,7 +90,7 @@ resource "aws_security_group" "nginx_sg" {
   egress {
     from_port   = var.aws_security_group_egress_port
     to_port     = var.aws_security_group_egress_port
-    protocol    = var.aws_security_group_egress_port
+    protocol    = var.aws_security_group_egress_protocol
     cidr_blocks = [var.aws_route_cidr]
   }
 
@@ -107,9 +107,7 @@ resource "aws_instance" "nginx1" {
 
   tags = local.common_tags
 
-  user_data =
-    user_data = 
-    <EOF
+  user_data = <<EOF
       #!/bin/bash
       yum update -y
       yum install -y httpd
@@ -130,6 +128,5 @@ resource "aws_instance" "nginx1" {
             </p>
         </body>
         </html>
-      HTML
     EOF
 }
