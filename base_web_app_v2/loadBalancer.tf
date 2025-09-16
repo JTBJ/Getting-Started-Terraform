@@ -1,3 +1,6 @@
+# aws_elb_service_account
+data "aws_elb_service_account" "root" {}
+
 # aws_lb
 resource "aws_lb" "nginx" {
   name               = "globo-web-alb"
