@@ -13,6 +13,7 @@ resource "aws_instance" "nginx1" {
   subnet_id                   = aws_subnet.public_subnet1.id
   vpc_security_group_ids      = [aws_security_group.nginx_sg.id]
   user_data_replace_on_change = true
+  depends_on                  = [aws_iam_role_policy.allow_s3_all]
 
   tags = local.common_tags
 
@@ -46,6 +47,7 @@ resource "aws_instance" "nginx2" {
   subnet_id                   = aws_subnet.public_subnet2.id
   vpc_security_group_ids      = [aws_security_group.nginx_sg.id]
   user_data_replace_on_change = true
+  depends_on                  = [aws_iam_role_policy.allow_s3_all]
 
   tags = local.common_tags
 

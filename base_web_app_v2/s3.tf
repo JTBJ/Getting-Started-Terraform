@@ -1,14 +1,14 @@
 # aws_s3_bucket
 resource "aws_s3_bucket" "app" {
-  bucket = local.s3_bucket_name
+  bucket        = local.s3_bucket_name
   force_destroy = true
 
-  tags  = local.common_tags
+  tags = local.common_tags
 }
 
 # aws_s3_bucket_policy
 resource "aws_s3_bucket_policy" "web_bucket" {
-  bucket = aws_s3_bucket.web_bucket.id
+  bucket = aws_s3_bucket.app.bucket
   policy = <<POLICY
     {
       "Version": "2012-10-17",
@@ -20,7 +20,7 @@ resource "aws_s3_bucket_policy" "web_bucket" {
           },
 
           "Action": "s3:PutObject",
-          "Resource": "arn:aws:s3:::${local.s3_bucket_name}/alb-logs/*"
+          "Resource": "arn:aws:s3:::${aws_s3_bucket.app.bucket}/alb-logs/*"
         },
         {
           "Effect": "Allow",
@@ -29,7 +29,7 @@ resource "aws_s3_bucket_policy" "web_bucket" {
           },
 
           "Action": "s3:PutObject",
-          "Resource": "arn:aws:s3:::${local.s3_bucket_name}/alb-logs/*",
+          "Resource": "arn:aws:s3:::${aws_s3_bucket.app.bucket}/alb-logs/*",
           
            "Condition": {
               "StringEquals": {
@@ -44,7 +44,7 @@ resource "aws_s3_bucket_policy" "web_bucket" {
              },
 
             "Action": "s3:GetBucketAcl",
-            "Resource": "arn:aws:s3:::${local.s3_bucket_name}"
+            "Resource": "arn:aws:s3:::${aws_s3_bucket.app.bucket}"
           }
        ]
      }
@@ -52,16 +52,16 @@ resource "aws_s3_bucket_policy" "web_bucket" {
 }
 
 # aws_s3_object
-resource "aws_s3_bucket_object" "website" {
-  bucket = aws_s3_bucket_name
+resource "aws_s3_object" "website" {
+  bucket = aws_s3_bucket.app.bucket
   key    = "/website/index.html"
   source = "./website/index.html"
 
   tags = local.common_tags
 }
 
-resource "aws_s3_bucket_object" "graphic" {
-  bucket = aws_s3_bucket_name
+resource "aws_s3_object" "graphic" {
+  bucket = aws_s3_bucket.app.bucket
   key    = "/website/Globo_logo_Vert.png"
   source = "./website/Globo_logo_Vert.png"
 
