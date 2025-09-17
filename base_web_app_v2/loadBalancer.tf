@@ -7,7 +7,7 @@ resource "aws_lb" "nginx" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_sg.id]
-  subnets            = [aws_subnet.public_subnet1.id, aws_subnet.public_subnet2.id]
+  subnets            = [for subnet in aws_subnet.public_subnets : subnet.id]
 
   enable_deletion_protection = false
 
@@ -49,11 +49,17 @@ resource "aws_lb_listener" "nginx" {
 # aws_lb_target_group_attachment
 resource "aws_lb_target_group_attachment" "nginx" {
   for_each = {
-    for k, v in [aws_instance.nginx1, aws_instance.nginx2] :
-    k => v
+    for index, instance in aws_instance.nginx : index => instance
   }
 
   target_group_arn = aws_lb_target_group.nginx.arn
   target_id        = each.value.id
   port             = var.aws_security_group_ingress_to_from_port
 }
+
+# resource "aws_lb_target_group_attachment" "nginx" {
+#   count = var.instance_count
+#   target_group_arn = aws_lb_target_group.nginx.arn
+#   target_id        = aws_instance.nginx[count.index].id
+#   port             = var.aws_security_group_ingress_to_from_port
+# }

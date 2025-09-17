@@ -4,6 +4,12 @@ variable "aws_region" {
   default     = ["us-east-1", "us-east-2", "us-west-1", "us-west-2"]
 }
 
+variable "vpc_public_subnet_count" {
+  type        = number
+  description = "The number of public subnets."
+  default     = 2
+}
+
 variable "aws_vpc_cidr" {
   type        = string
   description = "CIDR block for the VPC in AWS"
@@ -54,6 +60,12 @@ variable "instance_size" {
     medium = "t4.large"
     large  = "t4.xlarge"
   }
+}
+
+variable "instance_count" {
+  type        = number
+  description = "The number of instances to be created."
+  default     = 2
 }
 
 variable "company" {
