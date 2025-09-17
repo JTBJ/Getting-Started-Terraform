@@ -5,6 +5,11 @@ locals {
     billing_code = var.billing_code
   }
 
+  website_content = {
+    website = "/website/index.html"
+    logo    = "website/Globo_logo_Vert.png"
+  }
+
   s3_bucket_name = "globo-web-app-${random_integer.s3.result}"
 }
 
