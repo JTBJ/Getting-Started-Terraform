@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "app" {
   bucket        = local.s3_bucket_name
   force_destroy = true
 
-  tags = local.common_tags
+  tags = merge(local.common_tags, { Name = "${local.naming_prefix}-app" })
 }
 
 # aws_s3_bucket_policy
@@ -58,6 +58,6 @@ resource "aws_s3_object" "website_content" {
   key      = each.value
   source   = "${path.root}/${each.value}"
 
-  tags = local.common_tags
+  tags = merge(local.common_tags, { Name = "${local.naming_prefix}-website_content" })
 }
 

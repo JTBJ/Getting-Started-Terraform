@@ -3,6 +3,7 @@ locals {
     company      = var.company
     project      = "${var.company}-${var.project}"
     billing_code = var.billing_code
+    environment  = var.environment
   }
 
   website_content = {
@@ -10,7 +11,9 @@ locals {
     logo    = "website/Globo_logo_Vert.png"
   }
 
-  s3_bucket_name = "globo-web-app-${random_integer.s3.result}"
+  naming_prefix = "${var.naming_prefix}-${var.environment}"
+
+  s3_bucket_name = "${lower(local.naming_prefix)}-${random_integer.s3.result}"
 }
 
 resource "random_integer" "s3" {
