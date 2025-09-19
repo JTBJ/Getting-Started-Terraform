@@ -7,7 +7,7 @@ resource "aws_lb" "nginx" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_sg.id]
-  subnets            = [for subnet in aws_subnet.public_subnets : subnet.id]
+  subnets            = [for subnet in module.app.public_subnets : subnet]
 
   enable_deletion_protection = false
 
@@ -27,7 +27,7 @@ resource "aws_lb_target_group" "nginx" {
   name     = "${local.naming_prefix}-alb-tg"
   port     = var.aws_security_group_ingress_to_from_port
   protocol = "HTTP"
-  vpc_id   = aws_vpc.app.id
+  vpc_id   = module.app.vpc_id
 
   tags = merge(local.common_tags, { Name = "${local.naming_prefix}-globo-web-alb-tg" })
 }

@@ -11,7 +11,7 @@ resource "aws_instance" "nginx" {
   count                       = var.instance_count
   ami                         = nonsensitive(data.aws_ssm_parameter.amzn2_linux.value)
   instance_type               = var.instance_size["small"]
-  subnet_id                   = aws_subnet.public_subnets[(count.index % var.vpc_public_subnet_count)].id
+  subnet_id                   = module.app.public_subnets[(count.index % var.vpc_public_subnet_count)]
   vpc_security_group_ids      = [aws_security_group.nginx_sg.id]
   user_data_replace_on_change = true
   iam_instance_profile        = aws_iam_instance_profile.nginx_profile.name
