@@ -14,6 +14,24 @@ data "aws_availability_zones" "available" {
 ##################################################################################
 
 # NETWORKING #
+module "app" {
+  source = "terraform-aws-modules/vpc/aws"
+  version = "6.0.0"
+
+  cidr = var.aws_vpc_cidr
+
+  azs             = slice(data.aws_availability_zones.available.names, 0, var.vpc_public_subnet_count)
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+
+  enable_nat_gateway = true
+  enable_vpn_gateway = true
+
+  tags = {
+    Terraform = "true"
+    Environment = "dev"
+  }
+}
+
 resource "aws_vpc" "app" {
   cidr_block           = var.aws_vpc_cidr
   enable_dns_hostnames = true
